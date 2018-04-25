@@ -4,6 +4,8 @@ import os, requests
 if os.path.exists('config.env'):
     print('Importing environment from .env file')
     for line in open('config.env'):
+        if line[0] == '#':
+            continue
         var = line.strip().split('=')
         if len(var) == 2:
             os.environ[var[0]] = var[1]
