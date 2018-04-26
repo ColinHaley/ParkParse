@@ -2,6 +2,9 @@ import os
 import requests
 
 API_ROOT="https://api.pushbullet.com/v2/"
+CLIENT_ID = None
+CLIENT_SECRET = None
+AUTH_CODE = None
 
 for line in open('config.env'):
     if line[0] == '#':
@@ -13,9 +16,9 @@ for line in open('config.env'):
 #/endpoint name : "description or link"
 pushbullet_endpoints = {
     "list devices":"devices",
-    "user info":"users/me"
+    "user info":"users/me",
+    "bearer token":"oauth2/token"
 }
-
 
 class Config(object):
     if os.environ.get('CLIENT_ID'):
@@ -30,7 +33,39 @@ class Config(object):
         CLIENT_ID = 'CLIENT_SECRET_NOT_SPECIFIED'
         print('CLIENT_SECRET needs to be specified in a config.env file.')
 
+    if os.environ.get('AUTH_CODE'):
+        AUTH_CODE = os.environ.get('AUTH_CODE')
+    else:
+        AUTH_CODE = 'AUTH_CODE_NOT_SPECIFIED'
+        print('AUTH_CODE needs to be specified in a config.env file.')
+
     def __init__(self,__verbose__ = False):
         print('init')
 
-    
+    def query_endpoint(self):
+        print('query ep')
+
+    def get_bearer_token(query_endpoint):
+        #curl --header 'Access-Token: o.zFyG5lUHFO8Pvvv6ZHNiWZ2xpnJYNqWD' --header 'Content-Type: application/json'
+        # --data-binary '{"client_id":"Ts0MIV4vugBP0Am02WjfF2UBMsYDkP3M","client_secret":"YgFrsoJ47Ia9jQ4xnmLJH78UH0JAwn3B","code":"o.2atoTJ4l7CcLWsFHsXDDLpYy0rAFldi0","grant_type":"authorization_code"}'
+        # --request POST https://api.pushbullet.com/oauth2/token
+        endpoint = API_ROOT + pushbullet_endpoints['bearer token']
+        headers = {
+            "Access-Token":"",
+            "Content-Type":"application/json"
+        }
+        dataset = {
+            'client_id' : CLIENT_ID,
+            'client_sercret' : CLIENT_SECRET,
+            'code' : AUTH_CODE,
+            'grant_type' : 'authorization_code'
+        }
+        response = requests.post(endpoint,headers=headers,data=dataset)
+        print (response.content)
+
+    @staticmethod
+    def get_devices(query_endpoint):
+        headers = {'Access-Token':"a"}
+        response = requests.get(API_ROOT + pushbullet_endpoints['user info'])
+
+test=Config().get_bearer_token()
