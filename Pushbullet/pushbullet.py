@@ -37,6 +37,7 @@ class Config(object):
     BEARER_TOKEN = None
 
     # These objects will be set and referenced by other methods within the class
+    PB_USER_IDEN = None
     PB_DEVICES = None
 
     def __init__(self):
@@ -105,7 +106,11 @@ class Config(object):
     def get_devices(self):
         headers = {'Access-Token':self.BEARER_TOKEN}
         response = requests.get(self.API_ROOT + pushbullet_endpoints['user info'],headers=headers)
-        print (json.loads(response.content))
+        if (response.status_code == 200):
+            self.PB_USER_IDEN = json.loads(response.content)['iden']
+        else:
+            print("Error acquiring user iden key from pushbullet")
+            self.PB_USER_IDEN = "PB_USER_IDEN_NOT_SET"
 
     #TODO: Write debug method for Config() class
 
