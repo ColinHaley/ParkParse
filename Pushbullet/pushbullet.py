@@ -1,3 +1,5 @@
+import json
+import datetime
 import os
 import requests
 
@@ -24,32 +26,36 @@ pushbullet_endpoints = {
 class Config(object):
     if os.environ.get('CLIENT_ID'):
         CLIENT_ID = os.environ.get('CLIENT_ID')
+        print(CLIENT_ID)
     else:
         CLIENT_ID = 'CLIENT_ID_NOT_SPECIFIED'
         print('CLIENT_ID needs to be specified in a config.env file.')
 
     if os.environ.get('CLIENT_SECRET'):
-        CLIENT_ID = os.environ.get('CLIENT_SECRET')
+        CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
+        print(CLIENT_SECRET)
     else:
-        CLIENT_ID = 'CLIENT_SECRET_NOT_SPECIFIED'
+        CLIENT_SECRET = 'CLIENT_SECRET_NOT_SPECIFIED'
         print('CLIENT_SECRET needs to be specified in a config.env file.')
 
     if os.environ.get('AUTH_CODE'):
         AUTH_CODE = os.environ.get('AUTH_CODE')
+        print(AUTH_CODE)
     else:
         AUTH_CODE = 'AUTH_CODE_NOT_SPECIFIED'
         print('AUTH_CODE needs to be specified in a config.env file.')
 
     if os.environ.get('PB_ACCESS_TOKEN'):
         ACCESS_TOKEN = os.environ.get('PB_ACCESS_TOKEN')
+        print(ACCESS_TOKEN)
     else:
         ACCESS_TOKEN = 'ACCESS_TOKEN_NOT_SPECIFIED'
         print('ACCESS_TOKEN needs to be specified in a config.env file.')
 
     def __init__(self,__verbose__ = False):
-        print('init')
+        print('New Run:  {0}'.format(datetime.datetime.now()))
 
-    def query_endpoint(self):
+    def query_endpoint(sel  f):
         print('query ep')
 
     def get_bearer_token(query_endpoint):
@@ -66,7 +72,10 @@ class Config(object):
         }
         response = requests.post(endpoint,headers=headers,data=dataset)
         print (response.content)
+        print("\n")
         print (endpoint)
+        print('\n')
+        print(json.dumps(dataset))
 
 
     @staticmethod
