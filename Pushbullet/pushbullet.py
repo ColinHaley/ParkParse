@@ -5,6 +5,7 @@ API_ROOT="https://api.pushbullet.com/v2/"
 CLIENT_ID = None
 CLIENT_SECRET = None
 AUTH_CODE = None
+ACCESS_TOKEN = None
 
 for line in open('config.env'):
     if line[0] == '#':
@@ -39,6 +40,12 @@ class Config(object):
         AUTH_CODE = 'AUTH_CODE_NOT_SPECIFIED'
         print('AUTH_CODE needs to be specified in a config.env file.')
 
+    if os.environ.get('PB_ACCESS_TOKEN'):
+        ACCESS_TOKEN = os.environ.get('PB_ACCESS_TOKEN')
+    else:
+        ACCESS_TOKEN = 'ACCESS_TOKEN_NOT_SPECIFIED'
+        print('ACCESS_TOKEN needs to be specified in a config.env file.')
+
     def __init__(self,__verbose__ = False):
         print('init')
 
@@ -48,7 +55,7 @@ class Config(object):
     def get_bearer_token(query_endpoint):
         endpoint = API_ROOT + pushbullet_endpoints['bearer token']
         headers = {
-            "Access-Token":"",
+            "Access-Token":ACCESS_TOKEN,
             "Content-Type":"application/json"
         }
         dataset = {
@@ -59,6 +66,8 @@ class Config(object):
         }
         response = requests.post(endpoint,headers=headers,data=dataset)
         print (response.content)
+        print (endpoint)
+
 
     @staticmethod
     def get_devices(query_endpoint):
