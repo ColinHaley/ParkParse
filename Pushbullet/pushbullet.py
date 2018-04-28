@@ -3,7 +3,10 @@ import datetime
 import os
 import requests
 
+# Override and global variables
 __bearer_token_override__ = True
+__cmh__ = None
+# End override and global variables
 
 for line in open('config.env'):
     if line[0] == '#':
@@ -19,15 +22,24 @@ pushbullet_endpoints = {
     "bearer token":"oauth2/token"
 }
 
-class Config():
+class Config(object):
     API_ROOT = "https://api.pushbullet.com/v2/"
+
+    # These settings must be specified in the .env file.
     CLIENT_ID = None
     CLIENT_SECRET = None
     AUTH_CODE = None
     ACCESS_TOKEN = None
+
+    # The Bearer Token should be retrieved live via the Config.get_bearer_token() call
+    # if necessary, the BEARER_TOKEN config line can be written and a global override of
+    # __bearer_token_override__ can be set to True to read from the config.
     BEARER_TOKEN = None
 
-    def __init__(self,__verbose__ = False):
+    # These objects will be set and referenced by other methods within the class
+    PB_DEVICES = None
+
+    def __init__(self):
         print('New Run:  {0}'.format(datetime.datetime.now()))
         if os.environ.get('CLIENT_ID'):
             self.CLIENT_ID = os.environ.get('CLIENT_ID')
@@ -90,8 +102,11 @@ class Config():
                     print(endpoint)
                     print(response.status_code)
 
-    def get_devices(query_endpoint):
-        headers = {'Access-Token':"a"}
-        response = requests.get(self.API_ROOT + pushbullet_endpoints['user info'])
+    def get_devices(self):
+        headers = {'Access-Token':self.BEARER_TOKEN}
+        response = requests.get(self.API_ROOT + pushbullet_endpoints['user info'],headers=headers)
+        print (json.loads(response.content))
 
-test=Config().get_bearer_token()
+    #TODO: Write debug method for Config() class
+
+test=Config().get_devices()
