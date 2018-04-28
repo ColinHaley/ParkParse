@@ -5,7 +5,7 @@ import requests
 
 # Override and global variables
 __bearer_token_override__ = True
-__cmh__ = True
+__cmh__ = None
 # End override and global variables
 
 for line in open('config.env'):
@@ -19,10 +19,11 @@ for line in open('config.env'):
 pushbullet_endpoints = {
     "list devices":"devices",
     "user info":"users/me",
-    "bearer token":"oauth2/token"
+    "bearer token":"oauth2/token",
+    "send message":"ephemerals"
 }
 
-class Config(object):
+class PushBullet(object):
     API_ROOT = "https://api.pushbullet.com/v2/"
 
     # These settings must be specified in the .env file.
@@ -131,7 +132,20 @@ class Config(object):
             print("Error acquiring user iden key from pushbullet")
             super.PB_DEVICES= "PB_USER_IDEN_NOT_SET"
 
-        print json.dumps(super.PB_DEVICES)
-    #TODO: Write debug method for Config() class
+    def get_devices(super):
+        if(__cmh__):
+            print super.PB_DEVICES
+        return super.PB_DEVICES
 
-test=Config().get_user_iden()
+    def send_message(super, message, phone_number):
+        endpoint = super.API_ROOT + pushbullet_endpoints['send message']
+        headers = {"Access-Token":super.BEARER_TOKEN,
+                   "Content-Type":"application/json"}
+        payload = {"push":{"conversation_iden": phone_number,"message": message,"package_name": "com.pushbullet.android",
+                           "source_user_iden": super.PB_USER_IDEN,"target_device_iden": super.PB_DEVICES['android']['iden'],
+                           "type": "messaging_extension_reply"}, "type": "push"}
+        response = requests.post(endpoint, headers=headers, data=json.dumps(payload))
+        if(__cmh__):
+            print response.content
+
+    #TODO: Write debug method for Config() class
