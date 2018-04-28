@@ -1,5 +1,9 @@
 from bs4 import BeautifulSoup
 import os, requests
+from Pushbullet import *
+
+# How to import my newly created class and actually send a message?
+# pparkConfig = ()
 
 if os.path.exists('config.env'):
     print('Importing environment from .env file')
