@@ -46,9 +46,6 @@ class Config(object):
         print('query ep')
 
     def get_bearer_token(query_endpoint):
-        #curl --header 'Access-Token: o.zFyG5lUHFO8Pvvv6ZHNiWZ2xpnJYNqWD' --header 'Content-Type: application/json'
-        # --data-binary '{"client_id":"Ts0MIV4vugBP0Am02WjfF2UBMsYDkP3M","client_secret":"YgFrsoJ47Ia9jQ4xnmLJH78UH0JAwn3B","code":"o.2atoTJ4l7CcLWsFHsXDDLpYy0rAFldi0","grant_type":"authorization_code"}'
-        # --request POST https://api.pushbullet.com/oauth2/token
         endpoint = API_ROOT + pushbullet_endpoints['bearer token']
         headers = {
             "Access-Token":"",
