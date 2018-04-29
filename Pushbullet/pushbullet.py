@@ -148,4 +148,6 @@ class PushBullet(object):
         if(__cmh__):
             print response.content
 
+        print("message sent")
+
     #TODO: Write debug method for Config() class
