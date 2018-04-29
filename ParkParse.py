@@ -22,16 +22,14 @@ if __name__ == "__main__":
         text_blocks = soup.find_all("div", "Component text-content-size text-content-style ArticleTextGroup clearfix")
 
         links_good = 0
-        links_bad = 1
+        links_bad = 0
 
         for item in text_blocks[2].find_all("li"):
             if (item.find("a")):
-                links_good +=1
-#
+                links_good += 1
             else:
-                links_bad +=1
-#                print(item)
-    links_bad+-1
+                print(item)
+                links_bad += 1
     print ("good: "+ str(links_good))
     print ("bad: "+ str(links_bad))
 
