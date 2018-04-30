@@ -116,7 +116,7 @@ class PushBullet(object):
 
     def get_user_iden(super):
         if (__cmh__):
-            print super.PB_USER_IDEN
+            print (super.PB_USER_IDEN)
         return super.PB_USER_IDEN
 
     def update_devices(super):
@@ -134,7 +134,7 @@ class PushBullet(object):
 
     def get_devices(super):
         if(__cmh__):
-            print super.PB_DEVICES
+            print (super.PB_DEVICES)
         return super.PB_DEVICES
 
     def send_message(super, message, phone_number):
@@ -146,7 +146,7 @@ class PushBullet(object):
                            "type": "messaging_extension_reply"}, "type": "push"}
         response = requests.post(endpoint, headers=headers, data=json.dumps(payload))
         if(__cmh__):
-            print response.content
+            print (response.content)
 
         print("message sent")
 
